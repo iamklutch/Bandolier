@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.yukidev.bandolier.ui.ViewMessageActivity">
+      <item android:id="@+id/action_delete"
+          android:title="@string/action_delete"
+          android:orderInCategory="3"
+          android:icon="@drawable/ic_action_discard"
+          app:showAsAction="always"/>
+
+      <item android:id="@+id/action_save_bullet"
+            android:title="Save Bullet"
+            android:orderInCategory="2"
+            android:icon="@drawable/ic_action_save"
+            app:showAsAction="always"/>
+    <item android:id="@+id/action_go_back"
+          android:title="Go Back"
+          android:orderInCategory="1"
+          android:icon="@drawable/ic_action_back"
+          app:showAsAction="always"/>
+</menu>

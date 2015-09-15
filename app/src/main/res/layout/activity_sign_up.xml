@@ -1,0 +1,108 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_gradient"
+            android:fillViewport="true">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:background="@drawable/bandolier"
+                    tools:context="com.yukidev.bandolier.ui.SignUpActivity">
+
+
+        <TextView
+            android:id="@+id/appTitle"
+            style="@style/AppTitle"/>
+        <TextView
+            android:id="@+id/devTitle"
+            style="@style/DevTitle"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            style="@style/TextLinearLayout">
+
+
+            <EditText
+                android:id="@+id/usernameField"
+                android:inputType="textPersonName"
+                android:hint="@string/username_hint"
+                style="@style/EditText"/>
+            <requestFocus />
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                style="@style/TextLinearLayout"
+                android:background="@color/linear_background"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/passwordEditText"
+                    android:inputType="textPassword"
+                    android:hint="@string/password_hint"
+                    android:textSize="20sp"
+                    android:layout_weight="1"
+                    style="@style/EditText"/>
+                <EditText
+                    android:id="@+id/passwordEditText2"
+                    android:inputType="textPassword"
+                    android:hint="@string/password_hint"
+                    android:textSize="20sp"
+                    android:layout_weight="1"
+                    style="@style/EditText"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                style="@style/TextLinearLayout"
+                android:background="@color/linear_background"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/lastNameText"
+                    android:hint="Last Name"
+                    android:textSize="20sp"
+                    android:layout_weight="1"
+                    style="@style/EditText"/>
+                <EditText
+                    android:id="@+id/squadronText"
+                    android:hint="@string/squadron_hint_sign_up"
+                    android:layout_weight="1"
+                    style="@style/EditText"/>
+            </LinearLayout>
+            <EditText
+                android:inputType="textEmailAddress"
+                android:id="@+id/emailField"
+                android:hint="@string/email_hint_sign_up"
+                style="@style/EditText"/>
+        </LinearLayout>
+        <Button
+            android:text="@string/button_sign_up"
+            android:id="@+id/signupButton"
+            style="@style/ButtonStyle"/>
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/signUpProgressBar"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:indeterminate="true"/>
+
+        <ImageButton
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:id="@+id/imageButton"
+            android:scaleType="fitXY"
+            android:background="@android:color/transparent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/yuki_dev"/>
+
+    </RelativeLayout>
+
+</ScrollView>
