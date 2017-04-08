@@ -36,5 +36,44 @@ public class DateHelper {
         return date;
     }
 
+    public String DateChangerListOrder() {
+        Calendar c = Calendar.getInstance();
+        int Year = c.get(Calendar.YEAR);
+        int Month = c.get(Calendar.MONTH);
+        int Day = c.get(Calendar.DATE);
+        String orderDate = "";
+
+        String newDate = Day + "/" + (Month + 1) + "/" + Year;
+
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date dateObject;
+
+        try {
+            dateObject = formatter.parse(newDate);
+            orderDate = new SimpleDateFormat("YYYYDDD").format(dateObject);
+        }
+        catch (java.text.ParseException e) {
+            Log.d(TAG, "Error: " + e);
+        }
+
+        return orderDate;
+    }
+
+    public String ThreeCharMonthToOrderDate(String threeCharMonthDate) {
+        String oldOrderDate = "";
+        DateFormat formatter = new SimpleDateFormat("d MMM yyyy");
+        Date dateObject;
+
+        try {
+            dateObject = formatter.parse(threeCharMonthDate);
+            oldOrderDate = new SimpleDateFormat("YYYYDDD").format(dateObject);
+        }
+        catch (java.text.ParseException e) {
+            Log.d(TAG, "Error: " + e);
+        }
+
+        return oldOrderDate;
+    }
+
 
 }

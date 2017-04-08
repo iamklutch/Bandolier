@@ -49,6 +49,12 @@
 
         </activity>
         <activity
+            android:name=".ui.FirebaseAirmanBulletActivity"
+            android:label="@string/title_activity_airman_bullets"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
             android:name=".ui.ViewMessageActivity"
             android:label="@string/title_activity_view_message"
             android:screenOrientation="portrait">
@@ -67,6 +73,10 @@
             android:name=".ui.EditAccountActivity"
             android:label="@string/title_activity_edit_account"
             android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/settings_activity_label" >
         </activity>
     </application>
 

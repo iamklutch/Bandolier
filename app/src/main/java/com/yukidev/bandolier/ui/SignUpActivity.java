@@ -5,8 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,27 +16,26 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
-import com.parse.SignUpCallback;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.yukidev.bandolier.R;
 import com.yukidev.bandolier.utils.Crypto;
-import com.yukidev.bandolier.utils.ParseConstants;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SignUpActivity extends AppCompatActivity {
-    @Bind(R.id.usernameField)EditText mUsername;
-    @Bind(R.id.passwordEditText)EditText mPassword;
-    @Bind(R.id.passwordEditText2)EditText mPassword2;
-    @Bind(R.id.lastNameText)EditText mLastName;
-    @Bind(R.id.squadronText)EditText mSquadron;
-    @Bind(R.id.emailField)EditText mEmail;
-    @Bind(R.id.signupButton)Button mSignUpButton;
-    @Bind(R.id.signUpProgressBar)ProgressBar mProgressBar;
+    @BindView(R.id.usernameField) EditText mUsername;
+    @BindView(R.id.passwordEditText)EditText mPassword;
+    @BindView(R.id.passwordEditText2)EditText mPassword2;
+    @BindView(R.id.emailField)EditText mEmail;
+    @BindView(R.id.signupButton)Button mSignUpButton;
+    @BindView(R.id.signUpProgressBar)ProgressBar mProgressBar;
+    private FirebaseAuth mFirebaseAuth;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mProgressBar.setVisibility(View.INVISIBLE);
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
         mSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,12 +56,9 @@ public class SignUpActivity extends AppCompatActivity {
                     String username = mUsername.getText().toString().trim().toLowerCase();
                     String password = mPassword.getText().toString().trim();
                     String password2 = mPassword2.getText().toString().trim();
-                    String lastName = mLastName.getText().toString().trim();
-                    String squadron = mSquadron.getText().toString().toUpperCase();
                     String email = mEmail.getText().toString().trim().toLowerCase();
 
-                    if (username.isEmpty() || password.isEmpty() || email.isEmpty() ||
-                            username.length() < 5 || password.length() < 8) {
+                    if (password.isEmpty() || email.isEmpty() || password.length() < 8) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
                         builder.setMessage(R.string.signup_error_message)
                                 .setTitle(R.string.signup_error_title)
@@ -77,16 +75,37 @@ public class SignUpActivity extends AppCompatActivity {
                         dialog.show();
 
                     } else {
+
                         // create new user
                         mProgressBar.setVisibility(View.VISIBLE);
 
-                        ParseUser newUser = new ParseUser();
+                        mFirebaseAuth.createUserWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
+                                        } else {
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
+                                            builder.setMessage(task.getException().getMessage())
+                                                    .setTitle(R.string.signup_error_title)
+                                                    .setPositiveButton(android.R.string.ok, null);
+                                            AlertDialog dialog = builder.create();
+                                            dialog.show();
+                                        }
+                                    }
+                                });
+
+/*                        ParseUser newUser = new ParseUser();
                         newUser.setUsername(username);
                         newUser.setPassword(password);
                         newUser.setEmail(email);
                         newUser.put(ParseConstants.KEY_SUPERVISOR_ID, "none");
-                        newUser.put(ParseConstants.KEY_LASTNAME, lastName);
-                        newUser.put(ParseConstants.KEY_SQUADRON, squadron);
+                        newUser.put(ParseConstants.KEY_LASTNAME, "none");
+                        newUser.put(ParseConstants.KEY_SQUADRON, "none");
                         newUser.put(ParseConstants.KEY_DISPLAY_NAME, displayName);
                         newUser.signUpInBackground(new SignUpCallback() {
                             @Override
@@ -99,11 +118,11 @@ public class SignUpActivity extends AppCompatActivity {
                                     String mCurrentUser = ParseUser.getCurrentUser().getObjectId();
                                     message.put(ParseConstants.KEY_SENDER_ID,
                                             mCurrentUser);
-                                    message.put(ParseConstants.KEY_SENDER_NAME, "AmmoCan");
+                                    message.put(ParseConstants.KEY_SENDER_NAME, "Bandolier");
                                     message.put(ParseConstants.KEY_TARGET_USER,
                                             mCurrentUser);
                                     message.put(ParseConstants.KEY_BULLET_TITLE,
-                                            "Welcome to AmmoCan!");
+                                            "Welcome to Bandolier!");
                                     String encAction = encryptThis(mCurrentUser,
                                             getString(R.string.welcome_action_message));
                                     String encResult = encryptThis(mCurrentUser,
@@ -146,6 +165,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 }
                             }
                         });
+*/
                     }
                 } else {
                     Toast.makeText(SignUpActivity.this,

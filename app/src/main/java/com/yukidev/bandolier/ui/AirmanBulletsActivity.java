@@ -3,6 +3,10 @@ package com.yukidev.bandolier.ui;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.EditTextPreference;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -28,6 +32,8 @@ public class AirmanBulletsActivity extends AppCompatActivity {
     private String mObjectId;
     protected List<ParseObject> mMessages;
     private String[] mTargetEmailAddress;
+    private String mPrefEmailAddress;
+    private SharedPreferences mPreferences;
 
 
     @Override
@@ -40,6 +46,8 @@ public class AirmanBulletsActivity extends AppCompatActivity {
                     .add(R.id.container, new AirmanBulletsFragment())
                     .commit();
         }
+
+
     }
 
     @Override
@@ -71,12 +79,18 @@ public class AirmanBulletsActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 final EditText emailAddress = new EditText(this);
 
+                // ensures that if email is changed, correct email gets put in.
+                mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                mPrefEmailAddress = mPreferences.getString(SettingsActivity.KEY_EMAIL, "");
+
                 mTargetEmailAddress = new String[1];
                 emailAddress.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                emailAddress.setHint("Email addresses . . .");
-                builder.setTitle("Email Bullets");
-                builder.setMessage("Enter as many email addresses you wish to send your bullets" +
-                        " to, separated by semi-colons (;) i.e. jim@abc.com; bob@abc.com; etc.");
+                emailAddress.setHint(R.string.alertdialog_email_hint);
+                if (mPreferences.getBoolean(SettingsActivity.KEY_EMAIL_CHECK, false)) {
+                    emailAddress.setText(mPrefEmailAddress + ";");
+                }
+                builder.setTitle(R.string.alertdialog_email_title);
+                builder.setMessage(getString(R.string.alertdialog_email_message));
                 builder.setCancelable(true);
                 builder.setView(emailAddress);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -86,10 +100,16 @@ public class AirmanBulletsActivity extends AppCompatActivity {
                         emailBullets();
                     }
                 });
+                builder.setNegativeButton("Cancel", null);
                 builder.create().show();
                 break;
             case R.id.action_logout:
-                mCurrentUser.logOut();
+                mCurrentUser.logOutInBackground();
+                finish();
+                break;
+            case R.id.action_settings:
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
                 break;
         }
 
@@ -146,4 +166,5 @@ public class AirmanBulletsActivity extends AppCompatActivity {
         }
         return decryptedData;
     }
+
 }

@@ -6,8 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,24 +18,26 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.LogInCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.RequestPasswordResetCallback;
-import com.yukidev.bandolier.BandolierApplication;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.yukidev.bandolier.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+
+
 
 public class LoginActivity extends AppCompatActivity {
 
-    @Bind(R.id.loginProgressBar)ProgressBar mProgressBar;
-    @Bind(R.id.loginEditText)EditText mUsername;
-    @Bind(R.id.passwordEditText)EditText mPassword;
-    @Bind(R.id.loginButton)Button mLoginButton;
-    @Bind(R.id.signupText)TextView mSignUpTextView;
-    @Bind(R.id.forgotPassText)TextView mForgotPassText;
+    @BindView(com.yukidev.bandolier.R.id.loginProgressBar) ProgressBar mProgressBar;
+    @BindView(com.yukidev.bandolier.R.id.loginEditText)EditText mUsername;
+    @BindView(R.id.passwordEditText)EditText mPassword;
+    @BindView(R.id.loginButton)Button mLoginButton;
+    @BindView(R.id.signupText)TextView mSignUpTextView;
+    @BindView(R.id.forgotPassText)TextView mForgotPassText;
+    private FirebaseAuth mFirebaseAuth;
 
 
     @Override
@@ -44,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mProgressBar.setVisibility(View.INVISIBLE);
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
         if (isNetworkAvailable()) {
 
@@ -58,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
             mForgotPassText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                     final EditText emailEditText = new EditText(LoginActivity.this);
                     emailEditText.setHint(R.string.forgot_password_email_hint);
@@ -68,27 +73,17 @@ public class LoginActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             mProgressBar.setVisibility(View.VISIBLE);
                             String email = emailEditText.getText().toString().toLowerCase().trim();
-                            ParseUser.requestPasswordResetInBackground(email, new RequestPasswordResetCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    if (e == null) {
-                                        mProgressBar.setVisibility(View.INVISIBLE);
-                                        Toast.makeText(LoginActivity.this,
-                                                R.string.password_reset_email_sent_toast,
-                                                Toast.LENGTH_LONG).show();
-                                    } else {
-                                        mProgressBar.setVisibility(View.INVISIBLE);
-                                        Toast.makeText(LoginActivity.this,
-                                                getString(R.string.forgot_email_problem_toast_message) + e.getMessage(),
-                                                Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            });
+                            mFirebaseAuth.sendPasswordResetEmail(email);
+                            mProgressBar.setVisibility(View.INVISIBLE);
+                            Toast.makeText(LoginActivity.this,
+                                    R.string.password_reset_email_sent_toast,
+                                    Toast.LENGTH_LONG).show();
                         }
                     });
 
                     builder.setNegativeButton(R.string.cancel, null);
                     builder.create().show();
+
                 }
             });
 
@@ -115,7 +110,28 @@ public class LoginActivity extends AppCompatActivity {
                         //login
                         mProgressBar.setVisibility(View.VISIBLE);
 
-                        ParseUser.logInInBackground(username, password, new LogInCallback() {
+                        mFirebaseAuth.signInWithEmailAndPassword(username, password)
+                                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
+                                        } else {
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                                            builder.setMessage(task.getException().getMessage())
+                                                    .setTitle(R.string.signup_error_title)
+                                                    .setPositiveButton(android.R.string.ok, null);
+                                            AlertDialog dialog = builder.create();
+                                            dialog.show();
+                                        }
+                                    }
+                                });
+
+
+/*                        ParseUser.logInInBackground(username, password, new LogInCallback() {
                             @Override
                             public void done(ParseUser user, ParseException e) {
 
@@ -141,6 +157,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
 
                         });
+*/
                     }
                 }
             });

@@ -1,34 +1,35 @@
 package com.yukidev.bandolier.ui;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.yukidev.bandolier.R;
-import com.yukidev.bandolier.utils.ParseConstants;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class EditAccountActivity extends AppCompatActivity {
-
-    @Bind(R.id.currentUsernameField)TextView mUsername;
-    @Bind(R.id.currentUserLastName)EditText mLastName;
-    @Bind(R.id.currentUserSquadron)EditText mSquadron;
-    @Bind(R.id.currentEmail)EditText mCurrentEmail;
-    @Bind(R.id.newPasswordField)EditText mNewPassA;
-    @Bind(R.id.newPasswordField2)EditText mNewPassB;
-    @Bind(R.id.changePasswordButton)Button mPassButton;
+/*
+    @BindView(R.id.currentUsernameField) TextView mUsername;
+    @BindView(R.id.currentUserLastName)EditText mLastName;
+    @BindView(R.id.currentUserSquadron)EditText mSquadron;
+    @BindView(R.id.currentEmail)EditText mCurrentEmail;
+    @BindView(R.id.newPasswordField)EditText mNewPassA;
+    @BindView(R.id.newPasswordField2)EditText mNewPassB;
     private ParseUser mCurrentUser;
+*/
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+
+    @BindView(R.id.changePasswordButton)Button mPassButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,30 @@ public class EditAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_account);
         ButterKnife.bind(this);
 
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        final String userEmail = mFirebaseUser.getEmail();
+
+        mPassButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                mFirebaseAuth.sendPasswordResetEmail(userEmail);
+                Toast.makeText(EditAccountActivity.this,
+                        R.string.password_reset_email_sent_toast,
+                        Toast.LENGTH_LONG).show();
+/*
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/html");
+                intent.putExtra(Intent.EXTRA_EMAIL, "yuki.developers@gmail.com");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Password reset for ");
+                intent.putExtra(Intent.EXTRA_TEXT, mFirebaseUser.toString());
+                startActivity(Intent.createChooser(intent, "Send Email"));
+*/
+            }
+        });
+/*
         mCurrentUser = ParseUser.getCurrentUser();
 
         mUsername.setText(mCurrentUser.get(ParseConstants.KEY_DISPLAY_NAME).toString());
@@ -83,7 +108,7 @@ public class EditAccountActivity extends AppCompatActivity {
         });
 
 
-
+*/
 
     }
 
@@ -102,7 +127,7 @@ public class EditAccountActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_edit_account_save_changes:
+/*            case R.id.action_edit_account_save_changes:
                 mCurrentUser.put(ParseConstants.KEY_LASTNAME, mLastName.getText().toString().toLowerCase());
                 mCurrentUser.put(ParseConstants.KEY_DISPLAY_NAME, mLastName.getText().toString());
                 mCurrentUser.put(ParseConstants.KEY_SQUADRON, mSquadron.getText().toString().toUpperCase());
@@ -123,6 +148,7 @@ public class EditAccountActivity extends AppCompatActivity {
                     }
                 });
                 break;
+*/
             case R.id.action_cancel:
                 finish();
         }

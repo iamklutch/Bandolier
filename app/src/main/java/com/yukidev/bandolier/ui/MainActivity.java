@@ -4,36 +4,59 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.*;
+import android.os.Bundle;
 import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.parse.FindCallback;
-import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.yukidev.bandolier.R;
 import com.yukidev.bandolier.utils.ParseConstants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ParseUser mCurrentUser;
+//    private ParseUser mCurrentUser;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ParseAnalytics.trackAppOpenedInBackground(getIntent());
+        // Initialize Firebase Auth
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+        if(mFirebaseUser == null) {
+            navigateToLogin();
+        }
+        else {
+//            messageUpdater();
+            String clickedId = mFirebaseUser.getUid().toString();
+//            Intent intent = new Intent(MainActivity.this, AirmanBulletsActivity.class);
+            Intent intent = new Intent(MainActivity.this, FirebaseAirmanBulletActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("objectId", clickedId);
+            if (!isNetworkAvailable()) {
+                intent.putExtra("download", false);
+            } else {
+                intent.putExtra("download", true);
+            }
+            startActivity(intent);
+        }
+
+/*        ParseAnalytics.trackAppOpenedInBackground(getIntent());
         mCurrentUser = ParseUser.getCurrentUser();
 
         if(mCurrentUser == null) {
@@ -52,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
             }
             startActivity(intent);
         }
+*/
     }
 
     @Override

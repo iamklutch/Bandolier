@@ -1,39 +1,41 @@
 package com.yukidev.bandolier.ui;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.parse.ParseException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
 import com.yukidev.bandolier.R;
 import com.yukidev.bandolier.utils.Crypto;
 import com.yukidev.bandolier.utils.DateHelper;
-import com.yukidev.bandolier.utils.ParseConstants;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MessageActivity extends AppCompatActivity {
 
     private ParseObject mMessage;
+    private String mUserId;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private DatabaseReference mDatabase;
     InterstitialAd mInterstitialAd;
-    @Bind(R.id.titleText)EditText mTitleText;
-    @Bind(R.id.actionText) EditText mActionText;
-    @Bind(R.id.resultText) EditText mResultText;
-    @Bind(R.id.impactText) EditText mImpactText;
+    @BindView(R.id.titleText) EditText mTitleText;
+    @BindView(R.id.actionText) EditText mActionText;
+    @BindView(R.id.resultText) EditText mResultText;
+    @BindView(R.id.impactText) EditText mImpactText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,11 @@ public class MessageActivity extends AppCompatActivity {
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-app-pub-7998491028752978/4956960648");
         requestNewInterstitial();
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mUserId = mFirebaseUser.getUid();
     }
 
     @Override
@@ -61,7 +68,9 @@ public class MessageActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.action_message_send:
-                ParseObject message = createMessage();
+                createMessage();
+                finish();
+/*                ParseObject message = createMessage();
                 message.pinInBackground();
                 if (message == null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MessageActivity.this);
@@ -81,6 +90,7 @@ public class MessageActivity extends AppCompatActivity {
                     send(message);
                     finish();
                 }
+                */
                 break;
             case R.id.action_go_back:
                 finish();
@@ -89,7 +99,7 @@ public class MessageActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+/*
     protected void send(ParseObject message) {
         mMessage = message;
 
@@ -134,16 +144,17 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
     }
-
-    protected ParseObject createMessage() {
+*/
+    protected Void createMessage() {
 
         String title;
         String action;
         String result;
         String impact;
-        String pass = ParseUser.getCurrentUser().getObjectId();
+        String pass = mUserId;
         DateHelper today = new DateHelper();
         String date = today.DateChangerThreeCharMonth();
+        String orderDate = today.DateChangerListOrder();
 
         // prevents null object reference
         if (mActionText.getText().toString().equals("")){
@@ -174,6 +185,16 @@ public class MessageActivity extends AppCompatActivity {
         String encryptedResult = encryptThis(pass, result);
         String encryptedImpact = encryptThis(pass, impact);
 
+        Bullet bullet = new Bullet(title, orderDate, date, encryptedAction, encryptedResult, encryptedImpact);
+
+        mDatabase.child("users").child(mUserId).child("bullets").push().setValue(bullet);
+
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        } else {
+            return null;
+        }
+ /*
         ParseObject message = new ParseObject(ParseConstants.CLASS_MESSAGES);
         message.put(ParseConstants.KEY_SENDER_ID, ParseUser.getCurrentUser().getObjectId());
         message.put(ParseConstants.KEY_SENDER_NAME,
@@ -188,15 +209,8 @@ public class MessageActivity extends AppCompatActivity {
         message.put(ParseConstants.KEY_BEEN_SENT, false);
         message.put(ParseConstants.KEY_REQUEST_TYPE, "empty");
         message.put(ParseConstants.KEY_MESSAGE_TYPE, "bullet");
-
-        return message;
-    }
-
-    protected String getSupervisorIds() {
-        String supervisorID = ParseUser.getCurrentUser().
-                getString(ParseConstants.KEY_SUPERVISOR_ID);
-
-        return supervisorID;
+*/
+       return null;
     }
 
 
@@ -204,6 +218,7 @@ public class MessageActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice("C4A083AE232F9FB04BFA58FBF0E57A0A")
                 .addTestDevice("ECE8D8561B65128D4A9A8080E2C6A51C")
+                .addTestDevice("622116005CB058FCE56FC6FBBFCC8E3F")
                 .build();
 
         mInterstitialAd.loadAd(adRequest);

@@ -48,8 +48,6 @@ public class AirmanBulletsFragment extends android.support.v4.app.ListFragment {
         mObjectId = intent.getStringExtra("objectId");
         mDownload = intent.getBooleanExtra("download", false);
 
-        retrieveMessages();
-
         mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
 
@@ -147,6 +145,8 @@ public class AirmanBulletsFragment extends android.support.v4.app.ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        retrieveMessages();
 //        this.getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 //            @Override
 //            public boolean onItemLongClick(final AdapterView<?> parent, final View view, final int position, long id) {

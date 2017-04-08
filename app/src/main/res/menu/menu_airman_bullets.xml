@@ -8,7 +8,7 @@
             android:icon="@drawable/ic_action_edit"
             app:showAsAction="always"/>
       <item android:id="@+id/action_edit_account"
-            android:orderInCategory="99"
+            android:orderInCategory="90"
             android:title="Edit Account Info"
             app:showAsAction="never"/>
       <item android:id="@+id/action_logout"
@@ -20,4 +20,8 @@
             android:orderInCategory="2"
             android:icon="@drawable/ic_action_email"
             app:showAsAction="always"/>
+      <item android:id="@+id/action_settings"
+            android:orderInCategory="99"
+            android:title="@string/action_settings"
+            app:showAsAction="never"/>
 </menu>

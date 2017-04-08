@@ -31,7 +31,7 @@
     <string name="title_activity_message">Write Bullet</string>
     <string name="title_activity_edit_account">Edit Account</string>
 
-    <string name="no_messages">You have no bullets stored</string>
+    <string name="no_messages">Swipe down to refresh your bullet repository</string>
 
     <string name="completely_delete_message">This will COMPLETELY delete this bullet, there is no undo!</string>
     <string name="delete_request_or_bullet_title">Delete Bullet?</string>
@@ -47,14 +47,14 @@
     <string name="send_error_title">Problem uploading message</string>
     <string name="sorry">We/\'re sorry!</string>
 
-    <string name="welcome_action_message">Glad you made it! The screen you just came from is your bullet repository.  Bullets that you add will show up here and are stored online. When you create a bullet, it will not be immediately listed in your list because it takes a minute to save in the cloud.  To refresh the bullet repository, swipe down.</string>
+    <string name="welcome_action_message">Glad you made it! The screen you just came from is your bullet repository.  Bullets that you add will show up there and are stored online. When you create a bullet, it may not be immediately listed in your list because it takes a minute to save in the cloud.</string>
     <string name="welcome_result_message">This screen is where you\'ll view or write bullets.  To write a bullet, tap the pencil on the actionBar.  To view a bullet, just tap it! (And apparently you already did since you see this message!)</string>
-    <string name="welcome_impact_message">To delete this bullet, tap the garbage can in the actionBar.  Once you delete a bullet, it is GONE.  Like forever - so before you do, just make sure that you really want to delete it.</string>
+    <string name="welcome_impact_message">To delete this bullet, long press it on the bullet repository screen.  Once you delete a bullet, it is GONE.  Like forever - so before you do, just make sure that you really want to delete it.</string>
 
     <string name="new_password">New password</string>
     <string name="current_email">Current Email</string>
     <string name="password_again_hint">Password again</string>
-    <string name="help_text">If you have problems with this app email yuki.developers@gmail.com. \n \n
+    <string name="help_text">Version 2.0.0 \n\n If you have problems with this app email yuki.developers@gmail.com. \n \n
         If you find this free app helpful, click an ad to support us!</string>
     <string name="password_change_empty_toast">Please fill out all three password fields, then click the button</string>
     <string name="new_password_length_error_toast">Passwords must be at least 8 characters</string>
@@ -68,4 +68,15 @@
     <string name="cancel">CANCEL</string>
     <string name="internet_connection_unavailable">Internet connection unavailable</string>
     <string name="log_out">Log out</string>
+    <string name="email_checkbox_summary">Check this box to add a default email address to send your bullets to</string>
+    <string name="email_checkbox_title">Add default Email address?</string>
+
+    <string name="pref_email_edittext_dialog">Enter an Email address</string>
+    <string name="pref_email_edittext_title">Email Address</string>
+
+    <string name="pref_edittext_hint">Bob@abcd.com</string>
+    <string name="alertdialog_email_message">Enter as many email addresses you wish to send your bullets to, separated by semi-colons (;) i.e. jim@abc.com; bob@abc.com; etc.</string>
+    <string name="alertdialog_email_hint">Email addresses . . .</string>
+    <string name="alertdialog_email_title">Email Bullets</string>
+    <string name="settings_activity_label">Options</string>
 </resources>

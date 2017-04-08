@@ -60,17 +60,17 @@
                 style="@style/TextLinearLayout"
                 android:background="@color/linear_background"
                 android:orientation="horizontal">
-                <EditText
-                    android:id="@+id/lastNameText"
-                    android:hint="Last Name"
-                    android:textSize="20sp"
-                    android:layout_weight="1"
-                    style="@style/EditText"/>
-                <EditText
-                    android:id="@+id/squadronText"
-                    android:hint="@string/squadron_hint_sign_up"
-                    android:layout_weight="1"
-                    style="@style/EditText"/>
+                <!--<EditText-->
+                    <!--android:id="@+id/lastNameText"-->
+                    <!--android:hint="Last Name"-->
+                    <!--android:textSize="20sp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--style="@style/EditText"/>-->
+                <!--<EditText-->
+                    <!--android:id="@+id/squadronText"-->
+                    <!--android:hint="@string/squadron_hint_sign_up"-->
+                    <!--android:layout_weight="1"-->
+                    <!--style="@style/EditText"/>-->
             </LinearLayout>
             <EditText
                 android:inputType="textEmailAddress"

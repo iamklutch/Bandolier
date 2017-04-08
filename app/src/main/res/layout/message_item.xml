@@ -4,9 +4,13 @@
               android:layout_height="wrap_content"
               android:background="@android:color/transparent">
 
+
+
     <RelativeLayout
+
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
+                  android:id="@+id/messageItem"
                   android:layout_marginLeft="@dimen/inbox_horizontal_margin"
                     android:layout_marginRight="@dimen/inbox_horizontal_margin"
                     android:layout_marginTop="@dimen/inbox_vertical_margin"
@@ -76,5 +80,6 @@
             android:layout_alignParentLeft="true"/>
 
     </RelativeLayout>
+
 
 </LinearLayout>
