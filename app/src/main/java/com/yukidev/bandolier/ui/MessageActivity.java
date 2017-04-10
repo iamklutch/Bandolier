@@ -154,7 +154,7 @@ public class MessageActivity extends AppCompatActivity {
         String pass = mUserId;
         DateHelper today = new DateHelper();
         String date = today.DateChangerThreeCharMonth();
-        String orderDate = today.DateChangerListOrder();
+//        String orderDate = today.DateChangerListOrder();
 
         // prevents null object reference
         if (mActionText.getText().toString().equals("")){
@@ -185,7 +185,7 @@ public class MessageActivity extends AppCompatActivity {
         String encryptedResult = encryptThis(pass, result);
         String encryptedImpact = encryptThis(pass, impact);
 
-        Bullet bullet = new Bullet(title, orderDate, date, encryptedAction, encryptedResult, encryptedImpact);
+        Bullet bullet = new Bullet(title, date, encryptedAction, encryptedResult, encryptedImpact);
 
         mDatabase.child("users").child(mUserId).child("bullets").push().setValue(bullet);
 

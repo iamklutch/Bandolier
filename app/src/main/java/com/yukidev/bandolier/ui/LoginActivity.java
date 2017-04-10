@@ -119,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);
+                                            mProgressBar.setVisibility(View.INVISIBLE);
                                         } else {
                                             AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                                             builder.setMessage(task.getException().getMessage())
@@ -126,43 +127,17 @@ public class LoginActivity extends AppCompatActivity {
                                                     .setPositiveButton(android.R.string.ok, null);
                                             AlertDialog dialog = builder.create();
                                             dialog.show();
+                                            mProgressBar.setVisibility(View.INVISIBLE);
                                         }
                                     }
                                 });
 
-
-/*                        ParseUser.logInInBackground(username, password, new LogInCallback() {
-                            @Override
-                            public void done(ParseUser user, ParseException e) {
-
-                                if (e == null) {
-                                    // success logging in
-                                    mProgressBar.setVisibility(View.INVISIBLE);
-                                    BandolierApplication.updateParseInstallation(user);
-
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(intent);
-                                } else {
-                                    mProgressBar.setVisibility(View.INVISIBLE);
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                    builder.setMessage(e.getMessage())
-                                            .setTitle(R.string.signup_error_title)
-                                            .setPositiveButton(android.R.string.ok, null);
-
-                                    AlertDialog dialog = builder.create();
-                                    dialog.show();
-                                }
-                            }
-
-                        });
-*/
                     }
                 }
             });
         } else {
             Toast.makeText(this, "Network Unavailable", Toast.LENGTH_LONG).show();
+            mProgressBar.setVisibility(View.INVISIBLE);
         }
     }
 

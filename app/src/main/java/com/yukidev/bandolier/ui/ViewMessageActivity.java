@@ -21,7 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.yukidev.bandolier.R;
 import com.yukidev.bandolier.utils.Crypto;
-import com.yukidev.bandolier.utils.DateHelper;
 import com.yukidev.bandolier.utils.ParseConstants;
 
 import butterknife.BindView;
@@ -218,8 +217,8 @@ public class ViewMessageActivity extends AppCompatActivity {
         String action;
         String result;
         String impact;
-        DateHelper originalDate = new DateHelper();
-        String orderDate = originalDate.ThreeCharMonthToOrderDate(mDate);
+//        DateHelper originalDate = new DateHelper();
+//        String orderDate = originalDate.ThreeCharMonthToOrderDate(mDate);
 
         if (mActionText.getText().toString().equals("")){
             action = "empty";
@@ -249,7 +248,7 @@ public class ViewMessageActivity extends AppCompatActivity {
         String encryptedResult = encryptThis(mEncryptKey, result);
         String encryptedImpact = encryptThis(mEncryptKey, impact);
 
-        Bullet bullet = new Bullet(title, orderDate, mDate, encryptedAction, encryptedResult, encryptedImpact);
+        Bullet bullet = new Bullet(title, mDate, encryptedAction, encryptedResult, encryptedImpact);
         mDatabase.child("users").child(mUserId).child("bullets").child(mBulletKey).setValue(bullet);
         finish();
 /*

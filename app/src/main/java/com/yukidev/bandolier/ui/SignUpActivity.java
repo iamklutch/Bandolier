@@ -27,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SignUpActivity extends AppCompatActivity {
-    @BindView(R.id.usernameField) EditText mUsername;
+//    @BindView(R.id.usernameField) EditText mUsername;
     @BindView(R.id.passwordEditText)EditText mPassword;
     @BindView(R.id.passwordEditText2)EditText mPassword2;
     @BindView(R.id.emailField)EditText mEmail;
@@ -52,8 +52,8 @@ public class SignUpActivity extends AppCompatActivity {
 
                 if (isNetworkAvailable()) {
 
-                    String displayName = mUsername.getText().toString().trim();
-                    String username = mUsername.getText().toString().trim().toLowerCase();
+//                    String displayName = mUsername.getText().toString().trim();
+//                    String username = mUsername.getText().toString().trim().toLowerCase();
                     String password = mPassword.getText().toString().trim();
                     String password2 = mPassword2.getText().toString().trim();
                     String email = mEmail.getText().toString().trim().toLowerCase();

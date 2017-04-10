@@ -20,9 +20,8 @@ public class Bullet {
     }
 
     //Constructor
-    public Bullet (String title, String orderDate, String date, String action, String result, String impact) {
+    public Bullet (String title, String date, String action, String result, String impact) {
         this.title = title;
-        this.orderDate = orderDate;
         this.date = date;
         this.action = action;
         this.result = result;

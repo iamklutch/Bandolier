@@ -16,7 +16,8 @@
     <string name="title_activity_login">Login</string>
 
     <string name="password_hint">Password</string>
-    <string name="username_hint">Username</string>
+    <string name="password_again_hint">Passwd again</string>
+    <string name="username_hint">E-Mail</string>
     <string name="log_in">Login</string>
     <string name="sign_up_text">Don\'t have an account? Sign up!</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
@@ -53,7 +54,6 @@
 
     <string name="new_password">New password</string>
     <string name="current_email">Current Email</string>
-    <string name="password_again_hint">Password again</string>
     <string name="help_text">Version 2.0.0 \n\n If you have problems with this app email yuki.developers@gmail.com. \n \n
         If you find this free app helpful, click an ad to support us!</string>
     <string name="password_change_empty_toast">Please fill out all three password fields, then click the button</string>

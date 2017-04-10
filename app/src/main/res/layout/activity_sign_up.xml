@@ -28,11 +28,18 @@
             android:id="@+id/linearLayout"
             style="@style/TextLinearLayout">
 
-
+<!--
             <EditText
                 android:id="@+id/usernameField"
                 android:inputType="textPersonName"
                 android:hint="@string/username_hint"
+                style="@style/EditText"/>
+            <requestFocus />
+-->
+            <EditText
+                android:inputType="textEmailAddress"
+                android:id="@+id/emailField"
+                android:hint="@string/email_hint_sign_up"
                 style="@style/EditText"/>
             <requestFocus />
             <LinearLayout
@@ -50,7 +57,7 @@
                 <EditText
                     android:id="@+id/passwordEditText2"
                     android:inputType="textPassword"
-                    android:hint="@string/password_hint"
+                    android:hint="@string/password_again_hint"
                     android:textSize="20sp"
                     android:layout_weight="1"
                     style="@style/EditText"/>
@@ -60,23 +67,9 @@
                 style="@style/TextLinearLayout"
                 android:background="@color/linear_background"
                 android:orientation="horizontal">
-                <!--<EditText-->
-                    <!--android:id="@+id/lastNameText"-->
-                    <!--android:hint="Last Name"-->
-                    <!--android:textSize="20sp"-->
-                    <!--android:layout_weight="1"-->
-                    <!--style="@style/EditText"/>-->
-                <!--<EditText-->
-                    <!--android:id="@+id/squadronText"-->
-                    <!--android:hint="@string/squadron_hint_sign_up"-->
-                    <!--android:layout_weight="1"-->
-                    <!--style="@style/EditText"/>-->
+
             </LinearLayout>
-            <EditText
-                android:inputType="textEmailAddress"
-                android:id="@+id/emailField"
-                android:hint="@string/email_hint_sign_up"
-                style="@style/EditText"/>
+
         </LinearLayout>
         <Button
             android:text="@string/button_sign_up"
