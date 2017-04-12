@@ -70,27 +70,7 @@ public class MessageActivity extends AppCompatActivity {
             case R.id.action_message_send:
                 createMessage();
                 finish();
-/*                ParseObject message = createMessage();
-                message.pinInBackground();
-                if (message == null) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MessageActivity.this);
-                    builder.setMessage(getString(R.string.send_error_title))
-                            .setTitle(getString(R.string.sorry))
-                            .setPositiveButton(android.R.string.ok, null);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                } else if (!isNetworkAvailable()){
-                    message.put(ParseConstants.KEY_BEEN_SENT, false);
-                    message.pinInBackground();
-                    Toast.makeText(this, "Network unavailable, message will send when connection is available",
-                            Toast.LENGTH_LONG).show();
-                    finish();
-                } else {
-                    message.put(ParseConstants.KEY_BEEN_SENT, true);
-                    send(message);
-                    finish();
-                }
-                */
+
                 break;
             case R.id.action_go_back:
                 finish();
@@ -99,52 +79,7 @@ public class MessageActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-/*
-    protected void send(ParseObject message) {
-        mMessage = message;
 
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        } else {
-            mMessage.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null) {
-                        //success
-                        Toast.makeText(MessageActivity.this, getString(R.string.success_message),
-                                Toast.LENGTH_LONG).show();
-
-                    } else {
-                        mMessage.put(ParseConstants.KEY_BEEN_SENT, false);
-                        mMessage.pinInBackground();
-                        Toast.makeText(MessageActivity.this, "Problem sending message: " +
-                                e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-        }
-
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                requestNewInterstitial();
-                mMessage.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e == null) {
-                            //success
-                            Toast.makeText(MessageActivity.this, getString(R.string.success_message),
-                                    Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(MessageActivity.this, "Problem sending message: " +
-                                    e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-            }
-        });
-    }
-*/
     protected Void createMessage() {
 
         String title;
@@ -194,22 +129,7 @@ public class MessageActivity extends AppCompatActivity {
         } else {
             return null;
         }
- /*
-        ParseObject message = new ParseObject(ParseConstants.CLASS_MESSAGES);
-        message.put(ParseConstants.KEY_SENDER_ID, ParseUser.getCurrentUser().getObjectId());
-        message.put(ParseConstants.KEY_SENDER_NAME,
-                ParseUser.getCurrentUser().get(ParseConstants.KEY_DISPLAY_NAME));
-        message.put(ParseConstants.KEY_SUPERVISOR_ID, "none");
-        message.put(ParseConstants.KEY_BULLET_TITLE, title);
-        message.put(ParseConstants.KEY_ACTION, encryptedAction);
-        message.put(ParseConstants.KEY_RESULT, encryptedResult);
-        message.put(ParseConstants.KEY_IMPACT, encryptedImpact);
-        message.put(ParseConstants.KEY_CREATED_ON, date);
-        message.put(ParseConstants.KEY_VIEWED, false);
-        message.put(ParseConstants.KEY_BEEN_SENT, false);
-        message.put(ParseConstants.KEY_REQUEST_TYPE, "empty");
-        message.put(ParseConstants.KEY_MESSAGE_TYPE, "bullet");
-*/
+
        return null;
     }
 

@@ -20,8 +20,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.yukidev.bandolier.R;
 import com.yukidev.bandolier.utils.Crypto;
+import com.yukidev.bandolier.utils.DateHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,6 +37,8 @@ public class SignUpActivity extends AppCompatActivity {
     @BindView(R.id.signupButton)Button mSignUpButton;
     @BindView(R.id.signUpProgressBar)ProgressBar mProgressBar;
     private FirebaseAuth mFirebaseAuth;
+    private String mUserId;
+    private DatabaseReference mDatabase;
 
 
 
@@ -84,6 +89,27 @@ public class SignUpActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         if (task.isSuccessful()) {
+                                            // Write the welcome message
+                                            mUserId = mFirebaseAuth.getCurrentUser().getUid();
+                                            DateHelper today = new DateHelper();
+                                            String date = today.DateChangerThreeCharMonth();
+
+                                            String encryptedAction = encryptThis(mUserId,
+                                                    getString(R.string.welcome_action_message));
+                                            String encryptedResult = encryptThis(mUserId,
+                                                    getString(R.string.welcome_impact_message));
+                                            String encryptedImpact = encryptThis(mUserId,
+                                                    getString(R.string.welcome_result_message));
+
+                                            Bullet bullet = new Bullet("Welcome! Tap here. . .", date,
+                                                    encryptedAction, encryptedResult, encryptedImpact);
+
+                                            mDatabase = FirebaseDatabase.getInstance().getReference();
+
+                                            mDatabase.child("users").child(mUserId).child("bullets")
+                                                    .push().setValue(bullet);
+
+                                            // start Bandolier if the account is created
                                             Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

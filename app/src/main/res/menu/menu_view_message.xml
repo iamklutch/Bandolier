@@ -2,12 +2,12 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.yukidev.bandolier.ui.ViewMessageActivity">
-      <item android:id="@+id/action_delete"
+<!--      <item android:id="@+id/action_delete"
           android:title="@string/action_delete"
           android:orderInCategory="3"
           android:icon="@drawable/ic_action_discard"
           app:showAsAction="always"/>
-
+-->
       <item android:id="@+id/action_save_bullet"
             android:title="Save Bullet"
             android:orderInCategory="2"

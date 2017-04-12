@@ -5,23 +5,13 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.SaveCallback;
 import com.yukidev.bandolier.R;
-import com.yukidev.bandolier.utils.ParseConstants;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,9 +32,7 @@ public class MainActivity extends AppCompatActivity {
             navigateToLogin();
         }
         else {
-//            messageUpdater();
             String clickedId = mFirebaseUser.getUid().toString();
-//            Intent intent = new Intent(MainActivity.this, AirmanBulletsActivity.class);
             Intent intent = new Intent(MainActivity.this, FirebaseAirmanBulletActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("objectId", clickedId);
@@ -56,26 +44,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-/*        ParseAnalytics.trackAppOpenedInBackground(getIntent());
-        mCurrentUser = ParseUser.getCurrentUser();
-
-        if(mCurrentUser == null) {
-            navigateToLogin();
-        }
-        else {
-            messageUpdater();
-            String clickedId = mCurrentUser.getObjectId().toString();
-            Intent intent = new Intent(MainActivity.this, AirmanBulletsActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra("objectId", clickedId);
-            if (!isNetworkAvailable()) {
-                intent.putExtra("download", false);
-            } else {
-                intent.putExtra("download", true);
-            }
-            startActivity(intent);
-        }
-*/
     }
 
     @Override
@@ -114,50 +82,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // sends unsent messages (due to no internet when the messages were written
-    private void messageUpdater() {
-
-        Thread sendThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // saves resources and allows the messages to update in the background
-                android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-                Thread.currentThread();
-                ParseQuery<ParseObject> query2 = new ParseQuery<>(ParseConstants.CLASS_MESSAGES);
-                query2.fromLocalDatastore();
-                query2.findInBackground(new FindCallback<ParseObject>() {
-                    @Override
-                    public void done(List<ParseObject> list, ParseException e) {
-                        if (e == null) {
-
-                            if (!isNetworkAvailable()) {
-                                // no network so don't try to send message.
-                                Log.e("MainActivity: ", "MessageUpdater: No network");
-                            } else {
-                                for (int i = 0; i < list.size(); i++) {
-                                    ParseObject currentMessage = list.get(i);
-                                    currentMessage.put(ParseConstants.KEY_BEEN_SENT, true);
-                                    currentMessage.saveEventually(new SaveCallback() {
-                                        @Override
-                                        public void done(ParseException f) {
-                                            if (f == null) {
-
-                                            } else {
-                                                Log.e("MainActivity: ", "KEY_BEEN_SENT failed" + f.getMessage());
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-
-                        } else {
-                            Log.e("MainActivity: ", "MessageUpdater: failed retrieving local messages");
-                        }
-
-                    }
-                });
-            }
-        });
-        sendThread.start();
-    }
 }
