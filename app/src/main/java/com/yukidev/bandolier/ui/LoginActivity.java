@@ -27,7 +27,11 @@ import com.yukidev.bandolier.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/*
+    Bugs to fix:
+    2. prevent keyboard opening when viewing bullets
 
+ */
 
 public class LoginActivity extends AppCompatActivity {
 
